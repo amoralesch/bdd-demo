@@ -2,6 +2,7 @@ package com.amoralesch.vdp.web;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -44,5 +45,12 @@ public class Application {
           });
       }
     };
+  }
+
+  @Bean
+  @Qualifier("externalApiUrl")
+  public String externalApiUrl()
+  {
+    return "https://example.com";
   }
 }

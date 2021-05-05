@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.function.Function;
 
+import okhttp3.mockwebserver.MockWebServer;
 import org.concordion.api.AfterExample;
 import org.concordion.api.ExampleName;
 import org.concordion.api.MultiValueResult;
@@ -27,6 +28,9 @@ public abstract class ApiBase extends SpecBase {
 
   @Autowired
   protected MockMvc mvc;
+
+  @Autowired
+  protected MockWebServer fakeServer;
 
   @AfterExample
   public void apiCleanup(@ExampleName String example)

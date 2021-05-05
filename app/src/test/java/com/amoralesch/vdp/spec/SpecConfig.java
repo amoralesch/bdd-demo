@@ -3,12 +3,10 @@ package com.amoralesch.vdp.spec;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import okhttp3.mockwebserver.MockWebServer;
 import org.slf4j.Logger;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
-import org.springframework.context.annotation.Import;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,4 +26,18 @@ public class SpecConfig {
 
     return webAppContextSetup(ctx).build();
   }
+
+  @Bean
+  public MockWebServer fakeRestApi()
+  {
+    return new MockWebServer();
+  }
+
+  @Bean
+  @Qualifier("fakeExternalApi")
+  public String fakeExternalApi(MockWebServer server)
+  {
+    return server.url("localhost/").toString();
+  }
 }
+
