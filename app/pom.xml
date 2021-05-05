@@ -101,7 +101,6 @@
         <configuration>
           <systemPropertyVariables>
             <build.it.dir>${project.build.directory}</build.it.dir>
-            <webdriver.chrome.driver>${chromium.directory}/chromedriver${bin.suffix}</webdriver.chrome.driver>
             <concordion.output.dir>${concordion.directory}</concordion.output.dir>
           </systemPropertyVariables>
           <includes>
@@ -117,29 +116,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>com.spotify</groupId>
-        <artifactId>dockerfile-maven-plugin</artifactId>
-        <version>1.4.13</version>
-        <executions>
-          <execution>
-            <id>default</id>
-            <goals>
-              <goal>build</goal>
-              <goal>tag</goal>
-              <goal>push</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <repository>huesodocker/vdp</repository>
-          <tag>${project.version}</tag>
-          <contextDirectory>./</contextDirectory>
-          <buildArgs>
-            <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-          </buildArgs>
-        </configuration>
       </plugin>
     </plugins>
   </build>
