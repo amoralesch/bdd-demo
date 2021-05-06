@@ -66,10 +66,16 @@ public abstract class ApiBase extends SpecBase {
     MockHttpServletRequestBuilder req = request(method, URI.create(uri))
       .accept("application/json");
 
-    if (in != null)
-      req.contentType("application/json")
-        .characterEncoding("utF-8")
-        .content(objectMapper.writeValueAsBytes(in));
+    if (in != null) {
+      if (in instanceof String)
+        req.contentType("application/json")
+          .characterEncoding("utF-8")
+          .content((String)in);
+      else
+        req.contentType("application/json")
+          .characterEncoding("utF-8")
+          .content(objectMapper.writeValueAsBytes(in));
+    }
 
     MvcResult result = mvc.perform(req).andReturn();
     MockHttpServletResponse response = result.getResponse();

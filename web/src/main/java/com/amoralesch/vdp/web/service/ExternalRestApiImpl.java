@@ -41,7 +41,7 @@ public class ExternalRestApiImpl implements ExternalRestApi {
   public String post(ExternalRequest info)
   {
     return webClient.post()
-      .uri("/pco")
+      .uri("/api/pco")
       .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
       .body(Mono.just(info), ExternalRequest.class)
       .retrieve()

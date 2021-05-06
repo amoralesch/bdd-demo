@@ -7,3 +7,4 @@ The following operations are provide byt the API via
 web services.
 
 * [Get node status](GetStatus.md "c:run")
+* [How do we communicate with another API?](ConnectExternal.md "c:run")
