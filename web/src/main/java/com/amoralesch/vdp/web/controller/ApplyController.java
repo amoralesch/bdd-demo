@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 @RestController
 @RequestMapping(path = "/api/apply",
@@ -25,12 +28,17 @@ public class ApplyController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Map<String, String> apply(@RequestBody CustomRequest request) {
+//    requireNonNull(request.getId(), "ID may not be null");
+//    requireNonNull(request.getFirstName(), "first name may not be null");
+
+    String fullName = request.getFirstName() +
+      (request.getLastName() == null ? "" : " " + request.getLastName());
+
     Map<String, String> response = new HashMap<>();
 
     response.put("Works?", "Yes");
     response.put("ID", request.getId());
-    response.put("FullName", request.getFirstName() + " " +
-      request.getLastName());
+    response.put("FullName", fullName);
 
     return response;
   }
