@@ -17,12 +17,29 @@ import static java.util.Objects.requireNonNull;
 public class ApplyController {
   @GetMapping
   public Map<String, String> query() {
-    return null;
+    Map<String, String> response = new HashMap<>();
+
+    response.put("One", "Uno");
+    response.put("Two", "Dos");
+
+    return response;
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Map<String, String> apply(@RequestBody CustomRequest request) {
-    return null;
+//    requireNonNull(request.getId(), "ID may not be null");
+//    requireNonNull(request.getFirstName(), "first name may not be null");
+
+    String fullName = request.getFirstName() +
+      (request.getLastName() == null ? "" : " " + request.getLastName());
+
+    Map<String, String> response = new HashMap<>();
+
+    response.put("Works?", "Yes");
+    response.put("ID", request.getId());
+    response.put("FullName", fullName);
+
+    return response;
   }
 }

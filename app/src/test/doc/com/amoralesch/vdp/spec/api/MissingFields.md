@@ -11,7 +11,7 @@ in the body of the request. Of those, both `id` and `firstName` are
 required, while `lastName` is optional. Let's look at examples of how
 the system would react to missing properties.
 
-### [Example](- "missing-id c:status=ExpectedToFail")
+### [Example](- "missing-id")
 
 When a client makes a _[POST](- "#method")_ **[/api/apply](- "#uri")**
 HTTP request with the following body (formatted for readability):
@@ -38,7 +38,7 @@ JSON in the body (formatted for readability):
 
 ### ~~Example~~
 
-### [Example](- "missing-firstName c:status=ExpectedToFail")
+### [Example](- "missing-firstName")
 
 When a client makes a _[POST](- "#method")_ **[/api/apply](- "#uri")**
 HTTP request with the following body (formatted for readability):
@@ -69,7 +69,7 @@ As mentioned before, the field `lastName` is optional. As such, if the
 request doesn't include it, the application will work normally and will
 not return an error.
 
-### [Example](- "missing-lastName c:status=ExpectedToFail")
+### [Example](- "missing-lastName")
 
 When a client makes a _[POST](- "#method")_ **[/api/apply](- "#uri")**
 HTTP request with the following body (formatted for readability):

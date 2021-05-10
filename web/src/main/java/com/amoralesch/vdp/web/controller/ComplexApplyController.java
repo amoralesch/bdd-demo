@@ -21,6 +21,21 @@ public class ComplexApplyController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Map<String, String> apply(@RequestBody CustomRequest request) {
-    return null;
+    Map<String, String> response = new HashMap<>();
+
+    response.put("Works?", "Yes");
+    response.put("Response", api.post(toExternal(request)));
+
+    return response;
+  }
+
+  private ExternalRequest toExternal(CustomRequest request)
+  {
+    ExternalRequest r = new ExternalRequest();
+
+    r.setId(request.getId());
+    r.setFullName(request.getFirstName() + " " + request.getLastName());
+
+    return r;
   }
 }

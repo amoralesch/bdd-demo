@@ -4,7 +4,7 @@ Sometimes, you need to your API to connect to another external API, for
 those cases, it is possible to mock external APIs, and both check the
 information that they receive, and the information that they return.
 
-### [Example](- "external c:status=ExpectedToFail")
+### [Example](- "external")
 
 Given that:
 
@@ -48,7 +48,7 @@ JSON in the body (formatted for readability):
 It is also possible to test what the application will behave when the
 external API is down, or a time-out occurred
 
-### [Example](- "timeout c:status=ExpectedToFail")
+### [Example](- "timeout")
 
 Given that the external API is down and [not responding](- "fakeApiDown()") 
 to requests, when a client makes a _[POST](- "#method")_ 

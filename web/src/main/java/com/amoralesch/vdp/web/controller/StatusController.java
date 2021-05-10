@@ -18,7 +18,7 @@ public class StatusController {
   public static class Status {
     public String getStatus()
     {
-      return null;
+      return "Server Up";
     }
   }
 }
