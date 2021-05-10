@@ -15,4 +15,12 @@ import java.util.Map;
 @RequestMapping(path = "/api/ext-apply",
   produces = MediaType.APPLICATION_JSON_VALUE)
 public class ComplexApplyController {
+  @Autowired
+  private ExternalRestApi api;
+
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public Map<String, String> apply(@RequestBody CustomRequest request) {
+    return null;
+  }
 }
