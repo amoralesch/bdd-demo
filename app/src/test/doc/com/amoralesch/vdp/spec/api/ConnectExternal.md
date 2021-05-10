@@ -44,3 +44,32 @@ JSON in the body (formatted for readability):
 }</pre></div>
 
 ### ~~Example~~
+
+It is also possible to test what the application will behave when the
+external API is down, or a time-out occurred
+
+### [Example](- "timeout")
+
+Given that the external API is down and [not responding](- "fakeApiDown()") 
+to requests, when a client makes a _[POST](- "#method")_ 
+**[/api/ext-apply](- "#uri")** HTTP request with the following body 
+(formatted for readability):
+
+<div><pre concordion:execute="#response=http(#method, #uri, #TEXT)">{
+  "id" : "123",
+  "firstName" : "Steve",
+  "lastName" : "Harris"
+}</pre></div>
+
+the application responds with [500](- "?=#response.status") status
+and [application/json](- "?=#response.contentType") with the following
+JSON in the body (formatted for readability):
+
+<div><pre concordion:assert-equals="encode(#response.body)">{
+  "exception" : "ReactiveException",
+  "message" : "java.util.concurrent.TimeoutException: Did not observe any item or terminal signal within 3000ms in 'flatMap' (and no fallback has been configured)",
+  "error" : "Internal Server Error",
+  "status" : 500
+}</pre></div>
+
+### ~~Example~~

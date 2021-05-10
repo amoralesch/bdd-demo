@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Service
 public class ExternalRestApiImpl implements ExternalRestApi {
   private String baseUrl;
@@ -46,6 +48,7 @@ public class ExternalRestApiImpl implements ExternalRestApi {
       .body(Mono.just(info), ExternalRequest.class)
       .retrieve()
       .bodyToMono(String.class)
+      .timeout(Duration.ofSeconds(3))
       .block();
   }
 }

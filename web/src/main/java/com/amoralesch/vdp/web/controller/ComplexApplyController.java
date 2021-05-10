@@ -23,16 +23,8 @@ public class ComplexApplyController {
   public Map<String, String> apply(@RequestBody CustomRequest request) {
     Map<String, String> response = new HashMap<>();
 
-    String fromApi = "";
-
-    try {
-      fromApi = api.post(toExternal(request));
-    } catch (Exception ex) {
-      fromApi = ex.getMessage();
-    }
-
     response.put("Works?", "Yes");
-    response.put("Response", fromApi);
+    response.put("Response", api.post(toExternal(request)));
 
     return response;
   }

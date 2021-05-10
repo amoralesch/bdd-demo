@@ -3,6 +3,7 @@ package com.amoralesch.vdp.spec.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.RecordedRequest;
+import okhttp3.mockwebserver.SocketPolicy;
 import org.concordion.api.MultiValueResult;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,12 @@ public class ConnectExternalFixture extends ApiBase {
         .setResponseCode(200)
         .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
         .setBody(response));
+  }
+
+  public void fakeApiDown()
+  {
+    fakeServer.enqueue(
+      new MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE));
   }
 
   public String getExternalRequest()
