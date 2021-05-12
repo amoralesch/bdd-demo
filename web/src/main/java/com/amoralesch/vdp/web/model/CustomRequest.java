@@ -1,11 +1,12 @@
 package com.amoralesch.vdp.web.model;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 public class CustomRequest {
   private final String id;
@@ -13,6 +14,8 @@ public class CustomRequest {
   private final String firstName;
 
   private String lastName;
+
+  private Map<String, String> extraInfo = new HashMap<>();
 
   public String getId()
   {
@@ -32,6 +35,11 @@ public class CustomRequest {
   public void setLastName(String lastName)
   {
     this.lastName = lastName;
+  }
+
+  public Map<String, String> getExtraInfo()
+  {
+    return extraInfo;
   }
 
   @JsonCreator

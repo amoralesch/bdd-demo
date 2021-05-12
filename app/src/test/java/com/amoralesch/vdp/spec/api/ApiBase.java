@@ -4,11 +4,15 @@ import static org.concordion.api.MultiValueResult.multiValueResult;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import okhttp3.mockwebserver.MockWebServer;
+import com.amoralesch.vdp.spec.SpecBase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import org.concordion.api.AfterExample;
 import org.concordion.api.ExampleName;
 import org.concordion.api.MultiValueResult;
@@ -19,9 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import com.amoralesch.vdp.spec.SpecBase;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import okhttp3.mockwebserver.MockWebServer;
 
 public abstract class ApiBase extends SpecBase {
   private static final Logger log = getLogger(ApiBase.class);

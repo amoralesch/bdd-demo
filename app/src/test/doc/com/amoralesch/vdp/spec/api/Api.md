@@ -18,3 +18,4 @@ web services.
 * [Get node status](GetStatus.md "c:run")
 * [How the system react when the information is incorrect?](MissingFields.md "c:run")
 * [How can we test communication with external APIs?](ConnectExternal.md "c:run")
+* [How can a client send multiple attributes?](VariableAttributes.md "c:run")
