@@ -1,7 +1,8 @@
 package com.amoralesch.vdp.web.controller;
 
-import com.amoralesch.vdp.web.model.CustomRequest;
+import com.amoralesch.vdp.web.service.RequestProcessor;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,42 +18,24 @@ import java.util.Map;
 public class DynamicController {
     public static final String PATH = "/api/dyn";
 
-    @GetMapping("/**")
-    public Map<String, String> dynamicController(HttpServletRequest request) throws Exception
-    {
-        int i = 0;
-        Map<String, String> response = new HashMap<>();
-        String rest = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+    @Autowired
+    private RequestProcessor processor;
 
+    @GetMapping("/**")
+    public JsonNode dynamicController(HttpServletRequest request)
+    {
+        String rest = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         rest = rest.replace(PATH, "");
 
-        for (String part : rest.split("/"))
-            response.put(i++ + "", part);
-
-        return response;
+        return processor.processGet(rest);
     }
 
     @PostMapping("/**")
     @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, String> apply(HttpServletRequest request, @RequestBody JsonNode body) {
-        Map<String, String> response = new HashMap<>();
+    public JsonNode apply(HttpServletRequest request, @RequestBody JsonNode body) {
+        String rest = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        rest = rest.replace(PATH, "");
 
-        String id = body.get("id").textValue();
-
-        if ("123".equals(id))
-            requires(body, "first name", "user.firstName");
-
-        return response;
-    }
-
-    private void requires(JsonNode root, String field, String fieldPath) {
-        JsonNode r = root;
-
-        for (String p : fieldPath.split("\\.")) {
-            r = r.get(p);
-
-            if (r == null)
-                throw new IllegalArgumentException(field + " may not be null");
-        }
+        return processor.processPost(rest, body);
     }
 }
