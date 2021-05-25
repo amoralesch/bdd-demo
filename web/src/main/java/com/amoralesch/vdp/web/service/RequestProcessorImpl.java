@@ -43,6 +43,20 @@ public class RequestProcessorImpl implements RequestProcessor {
         "          \"maxLen\" : 15," +
         "          \"map\" : \"user.lastName\"" +
         "        }" +
+        "      ]," +
+        "      \"response\" : [" +
+        "        {" +
+        "          \"name\" : \"external\"," +
+        "          \"description\" : \"ID\"," +
+        "          \"required\" : false," +
+        "          \"map\" : \"connected?\"" +
+        "        }," +
+        "        {" +
+        "          \"name\" : \"response.working\"," +
+        "          \"description\" : \"working\"," +
+        "          \"required\" : true," +
+        "          \"map\" : \"response.value\"" +
+        "        }" +
         "      ]" +
         "    }" +
         "  ]" +
@@ -92,13 +106,25 @@ public class RequestProcessorImpl implements RequestProcessor {
 
         JsonNode mappedBody = mapRequest(rule, root);
 
-        return api.post(rule.get("forwardPoint").textValue(), mappedBody);
+        return mapResponse(rule, api.post(rule.get("forwardPoint").textValue(), mappedBody));
     }
 
     private JsonNode mapRequest(JsonNode rule, JsonNode request) {
         ObjectNode body = mapper.createObjectNode();
 
         for (JsonNode field : rule.withArray("fields")) {
+            String value = getRequestValue(request, field.get("name").textValue());
+
+            putValue(body, value, field.get("map").textValue());
+        }
+
+        return body;
+    }
+
+    private JsonNode mapResponse(JsonNode rule, JsonNode request) {
+        ObjectNode body = mapper.createObjectNode();
+
+        for (JsonNode field : rule.withArray("response")) {
             String value = getRequestValue(request, field.get("name").textValue());
 
             putValue(body, value, field.get("map").textValue());

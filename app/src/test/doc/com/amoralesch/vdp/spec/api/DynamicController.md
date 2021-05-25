@@ -122,7 +122,10 @@ Given that:
 
 <div><pre concordion:execute="setFakeResponse(#TEXT)">{
   "external" : "yes",
-  "working" : "correct"
+  "response" : {
+    "working" : "correct",
+    "ignore" : "of course!"
+  }
 }</pre></div>
 
 when a client makes a _[POST](- "#method")_ **[/api/dyn/post/test](- "#uri")**
@@ -152,8 +155,10 @@ and [application/json](- "?=#response.contentType") with the following
 JSON in the body (formatted for readability):
 
 <div><pre concordion:assert-equals="#response.body">{
-  "external" : "yes",
-  "working" : "correct"
+  "connected?" : "yes",
+  "response" : {
+    "value" : "correct"
+  }
 }</pre></div>
 
 ### ~~Example~~
