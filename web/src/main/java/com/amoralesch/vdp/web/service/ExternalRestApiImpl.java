@@ -1,6 +1,7 @@
 package com.amoralesch.vdp.web.service;
 
 import com.amoralesch.vdp.web.model.ExternalRequest;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -48,6 +49,18 @@ public class ExternalRestApiImpl implements ExternalRestApi {
       .body(Mono.just(info), ExternalRequest.class)
       .retrieve()
       .bodyToMono(String.class)
+      .timeout(Duration.ofSeconds(3))
+      .block();
+  }
+
+  @Override
+  public JsonNode post(String url, JsonNode body) {
+    return webClient.post()
+      .uri(url)
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .body(Mono.just(body), JsonNode.class)
+      .retrieve()
+      .bodyToMono(JsonNode.class)
       .timeout(Duration.ofSeconds(3))
       .block();
   }

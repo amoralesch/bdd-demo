@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.concordion.api.AfterExample;
+import org.concordion.api.BeforeExample;
 import org.concordion.api.ExampleName;
 import org.concordion.api.MultiValueResult;
 import org.slf4j.Logger;
@@ -35,8 +36,7 @@ public abstract class ApiBase extends SpecBase {
   protected MockWebServer fakeServer;
 
   @AfterExample
-  public void apiCleanup(@ExampleName String example)
-  {
+  public void apiCleanup(@ExampleName String example) throws IOException {
     if (!"[Outer]".equals(example)) {
       log.info("cleanup: {}:{}", specName, example);
     }
