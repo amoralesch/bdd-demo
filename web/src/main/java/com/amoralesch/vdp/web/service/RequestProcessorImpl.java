@@ -47,9 +47,10 @@ public class RequestProcessorImpl implements RequestProcessor {
         "      \"response\" : [" +
         "        {" +
         "          \"name\" : \"external\"," +
-        "          \"description\" : \"ID\"," +
+        "          \"description\" : \"external\"," +
         "          \"required\" : false," +
-        "          \"map\" : \"connected?\"" +
+        "          \"map\" : \"connected?\"," +
+        "          \"mustBe\" : \"yes\"" +
         "        }," +
         "        {" +
         "          \"name\" : \"response.working\"," +
@@ -127,6 +128,15 @@ public class RequestProcessorImpl implements RequestProcessor {
         for (JsonNode field : rule.withArray("response")) {
             String value = getRequestValue(request, field.get("name").textValue());
 
+            if (field.get("required").booleanValue() && value == null)
+                throw new IllegalArgumentException("'" + field.get("description").textValue() +
+                    "' field is missing from response");
+
+            JsonNode mustBe = field.get("mustBe");
+            if (mustBe != null && !mustBe.textValue().equals(value))
+                throw new IllegalArgumentException("'" + field.get("description").textValue() +
+                    "' field has unexpected response value");
+
             putValue(body, value, field.get("map").textValue());
         }
 
@@ -134,6 +144,9 @@ public class RequestProcessorImpl implements RequestProcessor {
     }
 
     private void putValue(ObjectNode body, String value, String fieldPath) {
+        if (value == null)
+            return;
+
         String[] path = fieldPath.split("\\.");
 
         ObjectNode node = body;

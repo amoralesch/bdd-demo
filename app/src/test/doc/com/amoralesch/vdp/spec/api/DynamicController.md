@@ -163,3 +163,111 @@ JSON in the body (formatted for readability):
 
 ### ~~Example~~
 
+If the response has missing required fields, the application throws an exception
+
+### [Example](- "broken-response")
+
+Given that:
+
+* there is an external API that is listening to the end-point
+  `/api/pco`;
+* the external API always responds with the following JSON information
+  (formatted for readability):
+
+<div><pre concordion:execute="setFakeResponse(#TEXT)">{
+  "external" : "yes",
+  "response" : {
+    "ignore" : "of course!"
+  }
+}</pre></div>
+
+when a client makes a _[POST](- "#method")_ **[/api/dyn/post/test](- "#uri")**
+HTTP request with the following body (formatted for readability):
+
+<div><pre concordion:execute="#response=http(#method, #uri, #TEXT)">{
+  "id" : "123",
+  "user" : {
+    "firstName" : "Steve",
+    "lastName" : "Harris",
+    "job" : "bassist"
+  }
+}</pre></div>
+
+the external API receives a request with the following body:
+
+<div><pre concordion:assert-equals="getExternalRequest()">{
+  "requestId" : "123",
+  "userFirstName" : "Steve",
+  "user" : {
+    "lastName" : "Harris"
+  }
+}</pre></div>
+
+and the application responds with [500](- "?=#response.status") status
+and [application/json](- "?=#response.contentType") with the following
+JSON in the body (formatted for readability):
+
+<div><pre concordion:assert-equals="encode(#response.body)">{
+  "exception" : "IllegalArgumentException",
+  "message" : "'working' field is missing from response",
+  "error" : "Internal Server Error",
+  "status" : 500
+}</pre></div>
+
+### ~~Example~~
+
+If one of the values on the response is not what was expected, then the
+system will throw an exception.
+
+### [Example](- "wrong-response")
+
+Given that:
+
+* there is an external API that is listening to the end-point
+  `/api/pco`;
+* the external API always responds with the following JSON information
+  (formatted for readability):
+
+<div><pre concordion:execute="setFakeResponse(#TEXT)">{
+  "external" : "no",
+  "response" : {
+    "working" : "correct",
+    "ignore" : "of course!"
+  }
+}</pre></div>
+
+when a client makes a _[POST](- "#method")_ **[/api/dyn/post/test](- "#uri")**
+HTTP request with the following body (formatted for readability):
+
+<div><pre concordion:execute="#response=http(#method, #uri, #TEXT)">{
+  "id" : "123",
+  "user" : {
+    "firstName" : "Steve",
+    "lastName" : "Harris",
+    "job" : "bassist"
+  }
+}</pre></div>
+
+the external API receives a request with the following body:
+
+<div><pre concordion:assert-equals="getExternalRequest()">{
+  "requestId" : "123",
+  "userFirstName" : "Steve",
+  "user" : {
+    "lastName" : "Harris"
+  }
+}</pre></div>
+
+and the application responds with [500](- "?=#response.status") status
+and [application/json](- "?=#response.contentType") with the following
+JSON in the body (formatted for readability):
+
+<div><pre concordion:assert-equals="encode(#response.body)">{
+  "exception" : "IllegalArgumentException",
+  "message" : "'external' field has unexpected response value",
+  "error" : "Internal Server Error",
+  "status" : 500
+}</pre></div>
+
+### ~~Example~~
+
