@@ -11,17 +11,15 @@ public class Rule {
 
     private final String verb;
 
-    private final String forwardTo;
+    private String forwardTo;
 
     private final List<Field> requestFields = new ArrayList();
 
     private final List<Field> responseFields = new ArrayList();
 
-    public Rule(String path, String verb, String forwardTo)
-    {
-        this.path = path;
+    public Rule(String verb, String path) {
         this.verb = verb;
-        this.forwardTo = forwardTo;
+        this.path = path;
     }
 
     public String getPath() {
@@ -30,6 +28,10 @@ public class Rule {
 
     public String getVerb() {
         return verb;
+    }
+
+    public void setForwardTo(String forwardTo) {
+        this.forwardTo = forwardTo;
     }
 
     public String getForwardTo() {

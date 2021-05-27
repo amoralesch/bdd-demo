@@ -1,27 +1,44 @@
 package com.amoralesch.vdp.web.logic;
 
+import com.amoralesch.vdp.web.logic.fluent.FieldBuilder;
+import com.amoralesch.vdp.web.logic.fluent.RuleBuilder;
+
+import static com.amoralesch.vdp.web.logic.fluent.FieldBuilder.newField;
+import static com.amoralesch.vdp.web.logic.fluent.RuleBuilder.newRule;
+
 public class TestRules extends Rules {
     public TestRules() {
         super();
 
-        Rule holaMundo = new Rule("/hola/mundo", "GET", "");
-        Rule postTest = new Rule("/post/test", "POST", "/api/pco");
+        addRule(newRule("GET", "/hola/mundo")
+            .build());
 
-        Field f1 = new Field("id", "ID", false, 5, "requestId", null);
-        Field f2 = new Field("user.firstName", "user's first name", true, 15, "userFirstName", null);
-        Field f3 = new Field("user.lastName", "user's last name", false, 15, "user.lastName", null);
-
-        Field e1 = new Field("external", "external", false, 0, "connected?", "yes");
-        Field e2 = new Field("response.working", "working", true, 0, "response.value", null);
-
-        postTest.addRequestField(f1);
-        postTest.addRequestField(f2);
-        postTest.addRequestField(f3);
-
-        postTest.addResponseField(e1);
-        postTest.addResponseField(e2);
-
-        addRule(holaMundo);
-        addRule(postTest);
+        addRule(newRule("POST", "/post/test")
+            .forwardTo("/api/pco")
+            .withRequestField(newField("id")
+                .withDescription("ID")
+                .withMaxLen(5)
+                .mapTo("requestId")
+                .build())
+            .withRequestField(newField("user.firstName")
+                .withDescription("user's first name")
+                .isRequired()
+                .withMaxLen(15)
+                .mapTo("userFirstName")
+                .build())
+            .withRequestField(newField("user.lastName")
+                .withDescription("user's last name")
+                .withMaxLen(15)
+                .build())
+            .withResponseField(newField("external")
+                .mapTo("connected?")
+                .mustEqual("yes")
+                .build())
+            .withResponseField(newField("response.working")
+                .withDescription("working")
+                .isRequired()
+                .mapTo("response.value")
+                .build())
+            .build());
     }
 }

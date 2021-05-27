@@ -3,43 +3,58 @@ package com.amoralesch.vdp.web.logic;
 public class Field {
     private final String name;
 
-    private final String description;
+    private String description;
 
-    private final boolean required;
+    private boolean required = false;
 
-    private final int maxLen;
+    private int maxLen = 0;
 
-    private final String mapTo;
+    private String mapTo;
 
-    private final String mustEqual;
+    private String mustEqual;
 
-    public Field(String name, String description, boolean required, int maxLen, String mapTo, String mustEqual) {
-        this.name = name;
-        this.description = description;
-        this.required = required;
-        this.maxLen = maxLen;
-        this.mapTo = mapTo;
-        this.mustEqual = mustEqual;
+    public Field(String path) {
+        this.name = path;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDescription() {
-        return description;
+        return description != null ? description : name;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     public boolean isRequired() {
         return required;
     }
 
+    public void setMaxLen(int maxLen) {
+        this.maxLen = maxLen;
+    }
+
     public int getMaxLen() {
         return maxLen;
     }
 
+    public void setMapTo(String mapTo) {
+        this.mapTo = mapTo;
+    }
+
     public String getMapTo() {
-        return mapTo;
+        return mapTo != null ? mapTo : name;
+    }
+
+    public void setMustEqual(String mustEqual) {
+        this.mustEqual = mustEqual;
     }
 
     public String getMustEqual() {
