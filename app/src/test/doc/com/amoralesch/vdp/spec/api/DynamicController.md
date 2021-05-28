@@ -271,3 +271,72 @@ JSON in the body (formatted for readability):
 
 ### ~~Example~~
 
+An error message can be constructed from values in the response.
+
+### [Example](- "error-message")
+
+Given that:
+
+* there is an external API that is listening to the end-point
+  `/api/pco`;
+* the external API always responds with the following JSON information
+  (formatted for readability):
+
+<div><pre concordion:execute="setFakeResponse(#TEXT)">{
+  "external" : "yes",
+  "response" : {
+    "working" : "correct",
+    "ignore" : "of course!"
+  },
+  "hasErrors" : true,
+  "errors" : [
+    {
+      "code" : 111,
+      "message" : "error #1"
+    },
+    {
+      "code" : 222,
+      "message" : "error #2"
+    },
+    {
+      "code" : 333,
+      "message" : "error #3"
+    }
+  ]
+}</pre></div>
+
+when a client makes a _[POST](- "#method")_ **[/api/dyn/post/test](- "#uri")**
+HTTP request with the following body (formatted for readability):
+
+<div><pre concordion:execute="#response=http(#method, #uri, #TEXT)">{
+  "id" : "123",
+  "user" : {
+    "firstName" : "Steve",
+    "lastName" : "Harris",
+    "job" : "bassist"
+  }
+}</pre></div>
+
+the external API receives a request with the following body:
+
+<div><pre concordion:assert-equals="getExternalRequest()">{
+  "requestId" : "123",
+  "userFirstName" : "Steve",
+  "user" : {
+    "lastName" : "Harris"
+  }
+}</pre></div>
+
+and the application responds with [500](- "?=#response.status") status
+and [application/json](- "?=#response.contentType") with the following
+JSON in the body (formatted for readability):
+
+<div><pre concordion:assert-equals="encode(#response.body)">{
+  "exception" : "IllegalArgumentException",
+  "message" : "external API replied with: 'error #1, error #2, error #3'",
+  "error" : "Internal Server Error",
+  "status" : 500
+}</pre></div>
+
+### ~~Example~~
+

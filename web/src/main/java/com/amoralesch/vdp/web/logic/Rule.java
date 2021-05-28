@@ -80,6 +80,13 @@ public class Rule {
             if (f.isRequired() && node == null)
                 throw new IllegalArgumentException("'" + f.getDescription() + "' field is missing from response");
 
+            if (!f.getShouldBePresent()) {
+                if (node != null)
+                    throw new IllegalArgumentException("external API replied with: '" + f.getErrorMessageGenerator().apply(body) + "'");
+
+                continue;
+            }
+
             if (f.getMustEqual() != null && !f.getMustEqual().equals(node.textValue()))
                 throw new IllegalArgumentException("'" + f.getDescription() + "' field has unexpected response value");
 

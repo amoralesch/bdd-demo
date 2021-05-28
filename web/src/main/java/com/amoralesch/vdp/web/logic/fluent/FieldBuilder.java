@@ -1,6 +1,9 @@
 package com.amoralesch.vdp.web.logic.fluent;
 
 import com.amoralesch.vdp.web.logic.Field;
+import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.function.Function;
 
 public class FieldBuilder {
     private final Field field;
@@ -21,6 +24,18 @@ public class FieldBuilder {
 
     public FieldBuilder isRequired() {
         field.setRequired(true);
+
+        return this;
+    }
+
+    public FieldBuilder mustNotBePresent() {
+        field.setShouldBePresent(false);
+
+        return this;
+    }
+
+    public FieldBuilder withErrorMessage(Function<JsonNode, String> function) {
+        field.setErrorMessageGenerator(function);
 
         return this;
     }
